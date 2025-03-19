@@ -9,13 +9,16 @@ from scipy.stats import chi2
 from sklearn.cluster import KMeans
 
 from Methodology.util.cluster_util import otsu
-import gdal
+#import gdal
 import time
 import imageio
 
+from falcker_core.util import image_path_to_data, get_image_paths
+before_img, after_img = image_path_to_data(get_image_paths()[0:2])
+
 
 class ISFA(object):
-    def __init__(self, img_X, img_Y, data_format='CHW'):
+    def __init__(self, img_X, img_Y, data_format='HWC'):
         """
         the init function
         :param img_X: former temporal image, its dim is (band_count, width, height)
@@ -138,16 +141,20 @@ class ISFA(object):
 
 
 def main():
-    data_set_X = gdal.Open('../../../Dataset/Landsat/Taizhou/2000TM')  # data set X
-    data_set_Y = gdal.Open('../../../Dataset/Landsat/Taizhou/2003TM')  # data set Y
+    # data_set_X = gdal.Open('../../../Dataset/Landsat/Taizhou/2000TM')  # data set X
+    # data_set_Y = gdal.Open('../../../Dataset/Landsat/Taizhou/2003TM')  # data set Y
+    # data_set_X = before_img
+    # data_set_Y = after_img
 
-    img_width = data_set_X.RasterXSize  # image width
-    img_height = data_set_X.RasterYSize  # image height
+    # img_width = data_set_X.RasterXSize  # image width
+    # img_height = data_set_X.RasterYSize  # image height
 
-    img_X = data_set_X.ReadAsArray(0, 0, img_width, img_height)
-    img_Y = data_set_Y.ReadAsArray(0, 0, img_width, img_height)
+    # img_X = data_set_X.ReadAsArray(0, 0, img_width, img_height)
+    # img_Y = data_set_Y.ReadAsArray(0, 0, img_width, img_height)
+    img_X = before_img
+    img_Y = after_img
 
-    channel, img_height, img_width = img_X.shape
+    img_height, img_width, channel = img_X.shape
     tic = time.time()
     sfa = ISFA(img_X, img_Y)
     # when max_iter is set to 1, ISFA becomes SFA
@@ -158,7 +165,8 @@ def main():
     thre = otsu(sqrt_chi2)
     bcm[sqrt_chi2 > thre] = 255
     bcm = np.reshape(bcm, (img_height, img_width))
-    imageio.imwrite('ISFA_Taizhou.png', bcm)
+    
+    imageio.imwrite('ISFA_Taizhou.jpg', bcm)
     toc = time.time()
     print(toc - tic)
 

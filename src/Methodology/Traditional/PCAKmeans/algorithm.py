@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.cluster import KMeans
 
-from util import zero_pad
+from Methodology.Traditional.PCAKmeans.util import zero_pad
 
 
 def gene_block(img, block_sz=4, gene_block_vec=True):
@@ -15,8 +15,8 @@ def gene_block(img, block_sz=4, gene_block_vec=True):
     vectors = []
     if gene_block_vec:
         # generate xd(y, x)
-        n_y = np.int(img.shape[0] / block_sz)
-        n_x = np.int(img.shape[1] / block_sz)
+        n_y = int(img.shape[0] / block_sz)
+        n_x = int(img.shape[1] / block_sz)
 
         for y in range(n_y):
             for x in range(n_x):
@@ -29,10 +29,10 @@ def gene_block(img, block_sz=4, gene_block_vec=True):
     else:
         # generate xd(i, j)
 
-        left_pad = np.int(np.ceil(block_sz / 2)) - 1
-        right_pad = block_sz - np.int(np.ceil(block_sz / 2))
-        up_pad = np.int(np.ceil(block_sz / 2)) - 1
-        down_pad = block_sz - np.int(np.ceil(block_sz / 2))
+        left_pad = int(np.ceil(block_sz / 2)) - 1
+        right_pad = block_sz - int(np.ceil(block_sz / 2))
+        up_pad = int(np.ceil(block_sz / 2)) - 1
+        down_pad = block_sz - int(np.ceil(block_sz / 2))
         pad = np.array([[up_pad, down_pad], [left_pad, right_pad]])
         pad_img = zero_pad(img, pad)  # pad image because the margin of image also need block vector
 
@@ -41,10 +41,10 @@ def gene_block(img, block_sz=4, gene_block_vec=True):
 
         for y in range(up_pad, up_pad + n_y):
             for x in range(left_pad, left_pad + n_x):
-                vert_start = y - np.int(np.ceil(block_sz / 2)) + 1
-                vert_end = y + block_sz - np.int(np.ceil(block_sz / 2)) + 1
-                horiz_start = x - np.int(np.ceil(block_sz / 2)) + 1
-                horiz_end = x + block_sz - np.int(np.ceil(block_sz / 2)) + 1
+                vert_start = y - int(np.ceil(block_sz / 2)) + 1
+                vert_end = y + block_sz - int(np.ceil(block_sz / 2)) + 1
+                horiz_start = x - int(np.ceil(block_sz / 2)) + 1
+                horiz_end = x + block_sz - int(np.ceil(block_sz / 2)) + 1
                 vec = pad_img[vert_start:vert_end, horiz_start:horiz_end].flatten()
                 vectors.append(vec)
     return np.array(vectors)

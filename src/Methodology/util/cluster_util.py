@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 
-import gdal
+# import gdal
 from skfuzzy import cmeans
 from scipy.spatial.distance import cdist
 import time

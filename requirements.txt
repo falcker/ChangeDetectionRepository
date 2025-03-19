@@ -1,0 +1,8 @@
+numpy
+torch
+scipy
+opencv-python
+scikit-learn
+ipykernel
+imageio
+scikit-fuzzy

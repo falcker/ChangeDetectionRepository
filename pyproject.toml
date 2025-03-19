@@ -1,0 +1,16 @@
+[project]
+name = "changedetectionrepository"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "imageio>=2.37.0",
+    "ipykernel>=6.29.5",
+    "numpy>=2.2.4",
+    "opencv-python>=4.11.0.86",
+    "scikit-fuzzy>=0.5.0",
+    "scikit-learn>=1.6.1",
+    "scipy>=1.15.2",
+    "torch>=2.6.0",
+]
